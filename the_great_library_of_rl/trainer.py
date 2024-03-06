@@ -2,11 +2,11 @@ from random import randrange
 
 from the_great_library_of_rl.environment import Environment
 from the_great_library_of_rl.exploration_strategies.epsilon_greedy_strategy import EpsilonGreedyStrategy
-from the_great_library_of_rl.q_table import QTable
+from the_great_library_of_rl.q_learning import QAgent
 
 
 class Trainer:
-    def __init__(self, agent: QTable, environment: Environment, exploration_strategy: EpsilonGreedyStrategy):
+    def __init__(self, agent: QAgent, environment: Environment, exploration_strategy: EpsilonGreedyStrategy):
         self.agent = agent
         self.environment = environment
         self.exploration_strategy = exploration_strategy
@@ -63,7 +63,7 @@ class Trainer:
         Choose an action with respect to the exploration strategy.
 
         Args:
-            state: Information about the state of the environment.
+            state: State of the environment.
 
         Returns:
             int: The action to take. Either random or determined by the agent.

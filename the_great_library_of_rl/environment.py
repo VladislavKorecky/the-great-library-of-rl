@@ -16,7 +16,7 @@ class Environment(ABC):
         Return the current state of the environment.
 
         Returns:
-            any: Information about the state of the environment.
+            State of the environment.
         """
 
         pass

@@ -1,11 +1,11 @@
 from time import sleep
 
 from the_great_library_of_rl.environment import Environment
-from the_great_library_of_rl.q_table import QTable
+from the_great_library_of_rl.q_learning import QAgent
 
 
 class Tester:
-    def __init__(self, agent: QTable, environment: Environment) -> None:
+    def __init__(self, agent: QAgent, environment: Environment) -> None:
         self.agent = agent
         self.environment = environment
 
