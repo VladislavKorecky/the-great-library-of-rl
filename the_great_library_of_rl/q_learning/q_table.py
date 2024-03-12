@@ -118,7 +118,7 @@ class QTable(QAgent):
         q_values = self.get_q_values(state)
         return max(q_values)
 
-    def update_q_value(self, state, action: int, reward: float, next_state):
+    def update_q_value(self, state, action: int, reward: float, next_state, non_terminal: bool):
         """
         Update the q-value in the table.
 
@@ -127,6 +127,7 @@ class QTable(QAgent):
             action (int): Action taken in the state.
             reward (float): Reward experienced after taking the action.
             next_state: State reached after taking the action.
+            non_terminal (bool): False if the environment ended (last state was reached), True otherwise.
         """
 
         # make sure that the state is registered
@@ -136,7 +137,7 @@ class QTable(QAgent):
         adjusted_current_value = self.get_q_value(state, action) * (1 - self.learning_rate)
 
         # calculate the expected future reward by looking at the q-value for the next state
-        expected_future_reward = self.gamma * self.get_max_q_value(next_state)
+        expected_future_reward = self.gamma * self.get_max_q_value(next_state) if non_terminal else 0
 
         # calculate the target q-value by combining the current and future reward
         target_q = (reward + expected_future_reward) * self.learning_rate

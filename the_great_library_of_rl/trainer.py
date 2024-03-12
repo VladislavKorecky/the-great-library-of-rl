@@ -51,12 +51,13 @@ class Trainer:
             # pull important information from the environment
             reward = self.environment.get_reward()
             next_state = self.environment.get_state()
+            non_terminal = not self.environment.is_terminated()
 
             # update the agent's brain
-            self.agent.update_q_value(state, action, reward, next_state)
+            self.agent.update_q_value(state, action, reward, next_state, non_terminal)
 
             # check if the loop should keep going
-            run = not self.environment.is_terminated()
+            run = non_terminal
 
     def __get_action(self, state) -> int:
         """

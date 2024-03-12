@@ -48,7 +48,7 @@ class QAgent(ABC):
 
         raise NotImplementedError
 
-    def get_max_q_value(self, state) -> float:
+    def get_max_q_value(self, state) -> float | Tensor:
         """
         Get the maximum q-value for a given state.
 
@@ -56,12 +56,12 @@ class QAgent(ABC):
             state: State of the environment.
 
         Returns:
-            float: Q-value of the best action.
+            float | Tensor: Q-value of the best action.
         """
 
         raise NotImplementedError
 
-    def update_q_value(self, state, action: int, reward: float, next_state):
+    def update_q_value(self, state, action: int, reward: float, next_state, non_terminal: bool):
         """
         Update the agent's q-value prediction.
 
@@ -70,6 +70,7 @@ class QAgent(ABC):
             action (int): Action taken in the state.
             reward (float): Reward experienced after taking the action.
             next_state: State reached after taking the action.
+            non_terminal (bool): False if the environment ended (last state was reached), True otherwise.
         """
 
         raise NotImplementedError

@@ -6,19 +6,20 @@ from the_great_library_of_rl.builtin_environments.tensor_gymnasium_environment i
 from the_great_library_of_rl.exploration_strategies.epsilon_greedy_strategy import EpsilonGreedyStrategy
 from the_great_library_of_rl.neural_network import NeuralNetwork
 from the_great_library_of_rl.q_learning.dqn import DQN
+from the_great_library_of_rl.q_learning.replay_memory import ReplayMemory
 from the_great_library_of_rl.tester import Tester
 from the_great_library_of_rl.trainer import Trainer
 
 
 # CONFIG
-EPOCHS = 20
+EPOCHS = 10000
 
 LEARNING_RATE = 0.001
 GAMMA = 0.95
 
 EPSILON_START = 1
 EPSILON_END = 0.05
-EPSILON_DECAY = 0.005
+EPSILON_DECAY = 1 / 10000
 
 
 # NETWORK
@@ -27,13 +28,13 @@ class Model(NeuralNetwork):
         super().__init__(*args, **kwargs)
 
         self.layers = Sequential(
-            Linear(1, 10),
+            Linear(4, 5),
             LeakyReLU(),
 
-            Linear(10, 10),
+            Linear(5, 5),
             LeakyReLU(),
 
-            Linear(10, 4)
+            Linear(5, 2)
         )
         self.optimizer = None
 
@@ -49,8 +50,9 @@ class Model(NeuralNetwork):
 
 # SETUP
 model = Model()
-env = TensorGymnasiumEnvironment("CliffWalking-v0")
-agent = DQN(model, GAMMA)
+replay_memory = ReplayMemory(100000, 30, 64)
+env = TensorGymnasiumEnvironment("CartPole-v1")
+agent = DQN(model, GAMMA, replay_memory=replay_memory)
 exploration_strategy = EpsilonGreedyStrategy(EPSILON_START, EPSILON_END, EPSILON_DECAY)
 
 trainer = Trainer(agent, env, exploration_strategy)
