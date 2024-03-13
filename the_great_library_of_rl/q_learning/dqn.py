@@ -94,6 +94,8 @@ class DQN(QAgent):
 
         # update without a replay memory
         if self.replay_memory is None:
+            # OPTIMIZATION NOTE: In some cases the Q value could be reused from the trainer instead
+            #                    of being recalculated
             q = self.get_q_values(state)[action]
             target_q = reward + self.gamma * self.get_max_q_value(next_state) if non_terminal else 0
 
