@@ -2,11 +2,11 @@ from random import randrange
 
 from the_great_library_of_rl.environment import Environment
 from the_great_library_of_rl.exploration_strategies.epsilon_greedy_strategy import EpsilonGreedyStrategy
-from the_great_library_of_rl.q_table import QTable
+from the_great_library_of_rl.q_learning import QAgent
 
 
 class Trainer:
-    def __init__(self, agent: QTable, environment: Environment, exploration_strategy: EpsilonGreedyStrategy):
+    def __init__(self, agent: QAgent, environment: Environment, exploration_strategy: EpsilonGreedyStrategy):
         self.agent = agent
         self.environment = environment
         self.exploration_strategy = exploration_strategy
@@ -51,19 +51,20 @@ class Trainer:
             # pull important information from the environment
             reward = self.environment.get_reward()
             next_state = self.environment.get_state()
+            non_terminal = not self.environment.is_terminated()
 
             # update the agent's brain
-            self.agent.update_q_value(state, action, reward, next_state)
+            self.agent.update_q_value(state, action, reward, next_state, non_terminal)
 
             # check if the loop should keep going
-            run = not self.environment.is_terminated()
+            run = non_terminal
 
     def __get_action(self, state) -> int:
         """
         Choose an action with respect to the exploration strategy.
 
         Args:
-            state: Information about the state of the environment.
+            state: State of the environment.
 
         Returns:
             int: The action to take. Either random or determined by the agent.

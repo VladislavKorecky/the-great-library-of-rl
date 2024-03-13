@@ -1,4 +1,7 @@
-class QTable:
+from the_great_library_of_rl.q_learning import QAgent
+
+
+class QTable(QAgent):
     """
     Q-Learning agent that works by storing the q-values in a table of states and actions.
 
@@ -21,7 +24,7 @@ class QTable:
         Return the q-values for a given state. Replace the q-values with zeros for non-registered states.
 
         Args:
-            state: Information about the state of the environment.
+            state: State of the environment.
 
         Returns:
             list[float]: Q-values for a given state.
@@ -40,7 +43,7 @@ class QTable:
         Return the best action given a state.
 
         Args:
-            state: Information about the state of the environment.
+            state: State of the environment.
 
         Returns:
             int: Best action according to the agent.
@@ -64,7 +67,7 @@ class QTable:
         Add a new state to the table.
 
         Args:
-            state: Information about the state of the environment.
+            state: State of the environment.
             check_if_exists (bool, optional): Check if the state already exists before editing the table. Default: True
         """
 
@@ -78,7 +81,7 @@ class QTable:
         Check if the state is registered in the table.
 
         Args:
-            state: Information about the state of the environment.
+            state: State of the environment.
 
         Returns:
             bool: True if the state exists, False otherwise.
@@ -91,7 +94,7 @@ class QTable:
         Return the q-value for a state/action pair.
 
         Args:
-            state: Information about the state of the environment.
+            state: State of the environment.
             action (int): Action to evaluate in the given state.
 
         Returns:
@@ -106,7 +109,7 @@ class QTable:
         Get the maximum q-value for a given state.
 
         Args:
-            state: Information about the state of the environment.
+            state: State of the environment.
 
         Returns:
             float: Q-value of the best action.
@@ -115,15 +118,16 @@ class QTable:
         q_values = self.get_q_values(state)
         return max(q_values)
 
-    def update_q_value(self, state, action: int, reward: float, next_state):
+    def update_q_value(self, state, action: int, reward: float, next_state, non_terminal: bool):
         """
         Update the q-value in the table.
 
         Args:
-            state: Information about the state of the environment.
+            state: State of the environment.
             action (int): Action taken in the state.
             reward (float): Reward experienced after taking the action.
             next_state: State reached after taking the action.
+            non_terminal (bool): False if the environment ended (last state was reached), True otherwise.
         """
 
         # make sure that the state is registered
@@ -133,7 +137,7 @@ class QTable:
         adjusted_current_value = self.get_q_value(state, action) * (1 - self.learning_rate)
 
         # calculate the expected future reward by looking at the q-value for the next state
-        expected_future_reward = self.gamma * self.get_max_q_value(next_state)
+        expected_future_reward = self.gamma * self.get_max_q_value(next_state) if non_terminal else 0
 
         # calculate the target q-value by combining the current and future reward
         target_q = (reward + expected_future_reward) * self.learning_rate

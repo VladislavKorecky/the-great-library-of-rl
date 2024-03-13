@@ -1,6 +1,6 @@
 from the_great_library_of_rl.builtin_environments.gymnasium_environment import GymnasiumEnvironment
 from the_great_library_of_rl.exploration_strategies.epsilon_greedy_strategy import EpsilonGreedyStrategy
-from the_great_library_of_rl.q_table import QTable
+from the_great_library_of_rl.q_learning.q_table import QTable
 from the_great_library_of_rl.tester import Tester
 from the_great_library_of_rl.trainer import Trainer
 
